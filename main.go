@@ -4,12 +4,14 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/uptrace/bunrouter"
 	"github.com/uptrace/bunrouter/extra/reqlog"
 )
 
 func main() {
+	port := os.Getenv("PORT")
 	router := bunrouter.New(
 		bunrouter.Use(reqlog.NewMiddleware(
 			reqlog.FromEnv("BUNDEBUG"),
@@ -27,8 +29,8 @@ func main() {
 		g.GET("/users/*path", debugHandler)
 	})
 
-	log.Println("listening on http://localhost:8080")
-	log.Println(http.ListenAndServe(":8080", router))
+	log.Printf("listening on http://localhost:%s", port)
+	log.Println(http.ListenAndServe(fmt.Sprintf(":%s", port), router))
 }
 
 func indexHandler(w http.ResponseWriter, req bunrouter.Request) error {
