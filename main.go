@@ -37,8 +37,9 @@ func indexHandler(w http.ResponseWriter, req bunrouter.Request) error {
 	w.WriteHeader(http.StatusOK)
 	fmt.Fprintf(
 		w,
-		"<html>Hello from bun %s</html>",
+		"<html>Hello from bun %s. PGDATABASE: %s</html>",
 		req.URL.Path,
+		os.Getenv("PGDATABASE"),
 	)
 	return nil
 }
